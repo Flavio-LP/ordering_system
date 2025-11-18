@@ -8,6 +8,7 @@ class Api::ProdutosController < ApplicationController
 
   def create
     @produto = Produto.new(produto_params)
+    puts @produto.inspect
     if @produto.save
       render json: @produto, status: :created
     else
