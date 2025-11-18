@@ -28,7 +28,7 @@ const ProductForm: React.FC = () => {
     await fetch('/api/produtos', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome, preco, descricao }),
+      body: JSON.stringify({ produto: { nome, preco, descricao } }),
     });
     setNome('');
     setPreco('');

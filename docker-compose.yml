@@ -3,6 +3,7 @@ version: '3.8'
 services:
   db:
     image: postgres:16
+    container_name: ordering_system_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
@@ -21,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    command: bash -c "bundle install && yarn install && bin/webpack-dev-server & rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"
+    container_name: ordering_system_web
     volumes:
       - .:/rails
       - node_modules:/rails/node_modules
@@ -41,5 +42,5 @@ services:
     tty: true
 
 volumes:
-  postgres_data:
+  postgres_data: 
   node_modules:
