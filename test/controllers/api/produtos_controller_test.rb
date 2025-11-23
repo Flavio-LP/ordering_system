@@ -1,6 +1,11 @@
 require "test_helper"
 
 class ProdutosApiTest < ActionDispatch::IntegrationTest
+  setup do
+    @user = users(:one)
+    sign_in @user
+  end
+
   test "should get all produtos" do
     get "/api/produtos"
     assert_response :success
