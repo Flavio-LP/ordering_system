@@ -4,6 +4,7 @@ services:
   db:
     image: postgres:16
     container_name: ordering_system_db
+    restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
@@ -21,6 +22,7 @@ services:
   redis:
     image: redis:7-alpine
     container_name: ordering_system_redis
+    restart: always
     ports:
       - "6379:6379"
     volumes:
@@ -35,6 +37,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+      restart: always
     container_name: ordering_system_web
     volumes:
       - .:/rails
