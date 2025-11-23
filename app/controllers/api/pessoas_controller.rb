@@ -1,4 +1,4 @@
-class Api::PessoasController < ApplicationController
+class Api::PessoasController < Api::BaseController
   skip_before_action :verify_authenticity_token
   def index
     @pessoas = Pessoa.all
