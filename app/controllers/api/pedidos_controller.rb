@@ -1,4 +1,4 @@
-class Api::PedidosController < ApplicationController
+class Api::PedidosController < Api::BaseController
   skip_before_action :verify_authenticity_token
   def index
     @pedidos = Pedido.includes(:pessoa, :produtos).all

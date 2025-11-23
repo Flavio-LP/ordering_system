@@ -1,4 +1,4 @@
-class Api::ProdutosController < ApplicationController
+class Api::ProdutosController < Api::BaseController
   skip_before_action :verify_authenticity_token
 
   def index
