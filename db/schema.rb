@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_18_011351) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_23_182500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -29,6 +29,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_18_011351) do
     t.decimal "total"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "pessoa_id", null: false
+    t.index ["pessoa_id"], name: "index_pedidos_on_pessoa_id"
+  end
+
+  create_table "pessoas", force: :cascade do |t|
+    t.string "nome"
+    t.string "sobrenome"
+    t.string "empresa"
+    t.string "setor"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "produtos", force: :cascade do |t|
@@ -41,4 +52,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_18_011351) do
 
   add_foreign_key "pedido_produtos", "pedidos"
   add_foreign_key "pedido_produtos", "produtos"
+  add_foreign_key "pedidos", "pessoas"
 end
