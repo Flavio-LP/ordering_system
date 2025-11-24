@@ -44,3 +44,6 @@ yarn-debug.log*
 # Ignore uploaded files in development
 /storage/*
 !/storage/.keep
+
+* text=auto eol=lf
+*.rb text eol=lf

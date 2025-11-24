@@ -4,17 +4,16 @@ services:
   db:
     image: postgres:16
     container_name: ordering_system_db
-    restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
       POSTGRES_DB: ordering_system_development
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -22,7 +21,6 @@ services:
   redis:
     image: redis:7-alpine
     container_name: ordering_system_redis
-    restart: always
     ports:
       - "6379:6379"
     volumes:
@@ -37,8 +35,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-      restart: always
+    env_file:
+      - .env
     container_name: ordering_system_web
+    command: bash -c "yarn install && bundle exec rails webpacker:compile && rails db:drop && rails db:create && rails db:migrate && rails db:seed && rails server -b 0.0.0.0"
     volumes:
       - .:/rails
       - node_modules:/rails/node_modules
@@ -46,9 +46,9 @@ services:
       - "3000:3000"
     environment:
       RAILS_ENV: development
-      PG_USER: postgres
-      PG_PASSWORD: postgres
-      PG_HOST: db
+      PG_USER: ${PG_USER}
+      PG_PASSWORD: ${PG_PASSWORD}
+      PG_HOST: ${PG_HOST}
       PG_PORT: 5432
       REDIS_URL: redis://redis:6379/0
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
@@ -59,6 +59,21 @@ services:
         condition: service_healthy
     stdin_open: true
     tty: true
+
+  webpacker:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env
+    container_name: ordering_system_webpacker
+    command: bash -c "yarn install && ./bin/webpack --watch --colors --progress"
+    volumes:
+      - .:/rails
+      - node_modules:/rails/node_modules
+    environment:
+      RAILS_ENV: development
+      NODE_ENV: development
 
 volumes:
   postgres_data: 
