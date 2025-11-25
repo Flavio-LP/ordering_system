@@ -19,13 +19,6 @@
   </head>
 
   <body>
-      <% if user_signed_in? %>
-        <div style="text-align: right; padding: 10px;">
-          <%= current_user.email %> | 
-          <%= button_to "Sair", destroy_user_session_path, method: :delete %>
-        </div>
-      <% end %>
-    
-     <%= yield %>
+    <%= yield %>
   </body>
 </html>
