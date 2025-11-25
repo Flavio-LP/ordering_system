@@ -1,9 +1,23 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+
+# Criar usuário admin
+puts "Criando usuário admin..."
+User.create!(
+  email: 'admin@example.com',
+  password: 'password123',
+  password_confirmation: 'password123'
+)
+
+
+# Criar produtos
+puts "Criando produtos..."
+produtos = []
+produtos << Produto.create!(nome: 'Pizza Margherita', preco: 35.90, descricao: 'Molho de tomate, mussarela e manjericão')
+produtos << Produto.create!(nome: 'Pizza Calabresa', preco: 38.90, descricao: 'Molho de tomate, mussarela e calabresa')
+produtos << Produto.create!(nome: 'Pizza Portuguesa', preco: 42.90, descricao: 'Presunto, ovos, cebola, azeitona e mussarela')
+produtos << Produto.create!(nome: 'Refrigerante 2L', preco: 8.90, descricao: 'Coca-Cola, Guaraná ou Fanta')
+produtos << Produto.create!(nome: 'Cerveja Lata', preco: 5.50, descricao: 'Cerveja gelada 350ml')
+
+
+puts "Seed concluído!"
+puts "Login: admin@example.com"
+puts "Senha: password123"

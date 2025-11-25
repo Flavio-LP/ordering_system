@@ -1,5 +1,17 @@
 Rails.application.routes.draw do
-    devise_for :users
+   devise_for :users, skip: [:registrations]
+  
+  devise_scope :user do
+    authenticated :user do
+      resource :registration,
+        only: [:edit, :update],
+        path: 'users',
+        path_names: { edit: 'edit' },
+        controller: 'devise/registrations',
+        as: :user_registration
+    end
+  end
+  
   get "up" => "rails/health#show", as: :rails_health_check
 
   authenticated :user do
@@ -11,6 +23,10 @@ Rails.application.routes.draw do
     get "pessoas", to: "page#pessoas"
 
     get "pedidos", to: "page#pedidos"
+
+    namespace :admin do
+      resources :users
+    end
 
     namespace :api do
       resources :produtos
