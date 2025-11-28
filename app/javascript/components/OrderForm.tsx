@@ -33,12 +33,14 @@ const OrderForm: React.FC = () => {
   const [itensPedido, setItensPedido] = useState<PedidoProduto[]>([]);
   const [produtoSelecionado, setProdutoSelecionado] = useState('');
   const [quantidade, setQuantidade] = useState('1');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     fetchProdutos();
     fetchPessoas();
     fetchPedidos();
-  }, []);
+  }, [currentPage, searchTerm]);
 
   const fetchProdutos = async () => {
     const response = await fetch('/api/produtos');
@@ -53,7 +55,11 @@ const OrderForm: React.FC = () => {
   };
 
   const fetchPedidos = async () => {
-    const response = await fetch('/api/pedidos');
+    const params = new URLSearchParams();
+    if (searchTerm) params.append('search', searchTerm);
+    params.append('page', currentPage.toString());
+    
+    const response = await fetch(`/api/pedidos?${params.toString()}`);
     const data = await response.json();
     setPedidos(data);
   };
@@ -79,6 +85,11 @@ const OrderForm: React.FC = () => {
 
   const calcularTotal = () => {
     return itensPedido.reduce((sum, item) => sum + (item.quantidade * item.preco_unitario), 0);
+  };
+
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
+    setCurrentPage(1);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -194,6 +205,14 @@ const OrderForm: React.FC = () => {
           Finalizar Pedido
         </button>
       </form>
+
+      <div>
+        <input 
+          value={searchTerm} 
+          onChange={e => handleSearch(e.target.value)} 
+          placeholder="Buscar por nome..." 
+        />
+      </div>
 
       <h2>Pedidos Realizados</h2>
       <table>
