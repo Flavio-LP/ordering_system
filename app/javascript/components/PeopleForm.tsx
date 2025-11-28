@@ -51,17 +51,16 @@ const PessoaForm: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: 800, margin: 'auto', padding: 20 }}>
+    <div>
       <h1>Cadastro de Pessoas</h1>
       
-      <form onSubmit={handleSubmit} style={{ marginBottom: 30 }}>
-        <div style={{ marginBottom: 10 }}>
+      <form onSubmit={handleSubmit}>
+        <div>
           <input 
             value={nome} 
             onChange={e => setNome(e.target.value)} 
             placeholder="Nome" 
             required 
-            style={{ width: '100%', padding: 8 }}
           />
         </div>
         <div style={{ marginBottom: 10 }}>
@@ -70,75 +69,69 @@ const PessoaForm: React.FC = () => {
             onChange={e => setSobrenome(e.target.value)} 
             placeholder="Sobrenome" 
             required 
-            style={{ width: '100%', padding: 8 }}
           />
         </div>
-        <div style={{ marginBottom: 10 }}>
+        <div>
           <input 
             value={empresa} 
             onChange={e => setEmpresa(e.target.value)} 
             placeholder="Empresa" 
             required 
-            style={{ width: '100%', padding: 8 }}
           />
         </div>
-        <div style={{ marginBottom: 10 }}>
+        <div>
           <input 
             value={setor} 
             onChange={e => setSetor(e.target.value)} 
             placeholder="Setor" 
-            required 
-            style={{ width: '100%', padding: 8 }}
+            required
           />
         </div>
-        <button type="submit" style={{ padding: '10px 20px' }}>Cadastrar Pessoa</button>
+        <button type="submit">Cadastrar Pessoa</button>
       </form>
 
-      <div style={{ marginBottom: 20 }}>
+      <div>
         <input 
           value={searchTerm} 
           onChange={e => handleSearch(e.target.value)} 
           placeholder="Buscar por nome..." 
-          style={{ width: '100%', padding: 10, fontSize: 16 }}
         />
       </div>
 
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <table>
         <thead>
           <tr>
-            <th style={{ border: '1px solid #ddd', padding: 8 }}>Nome</th>
-            <th style={{ border: '1px solid #ddd', padding: 8 }}>Sobrenome</th>
-            <th style={{ border: '1px solid #ddd', padding: 8 }}>Empresa</th>
-            <th style={{ border: '1px solid #ddd', padding: 8 }}>Setor</th>
+            <th>Nome</th>
+            <th>Sobrenome</th>
+            <th>Empresa</th>
+            <th>Setor</th>
           </tr>
         </thead>
         <tbody>
           {pessoas.map(pessoa => (
             <tr key={pessoa.id}>
-              <td style={{ border: '1px solid #ddd', padding: 8 }}>{pessoa.nome}</td>
-              <td style={{ border: '1px solid #ddd', padding: 8 }}>{pessoa.sobrenome}</td>
-              <td style={{ border: '1px solid #ddd', padding: 8 }}>{pessoa.empresa}</td>
-              <td style={{ border: '1px solid #ddd', padding: 8 }}>{pessoa.setor}</td>
+              <td>{pessoa.nome}</td>
+              <td>{pessoa.sobrenome}</td>
+              <td>{pessoa.empresa}</td>
+              <td>{pessoa.setor}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      <div style={{ marginTop: 20, display: 'flex', justifyContent: 'center', gap: 10 }}>
+      <div>
         <button 
           onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
           disabled={currentPage === 1}
-          style={{ padding: '8px 16px' }}
         >
           Anterior
         </button>
-        <span style={{ padding: '8px 16px' }}>
+        <span>
           Página {currentPage} de {totalPages}
         </span>
         <button 
           onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
           disabled={currentPage === totalPages}
-          style={{ padding: '8px 16px' }}
         >
           Próxima
         </button>

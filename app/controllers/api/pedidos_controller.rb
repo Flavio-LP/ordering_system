@@ -1,8 +1,23 @@
 class Api::PedidosController < Api::BaseController
   skip_before_action :verify_authenticity_token
   def index
-    @pedidos = Pedido.includes(:pessoa, :produtos).all
-    render json: @pedidos.as_json(include: { pessoa: {}, produtos: {} })
+    @pedidos = Pedido.includes(:pessoa, :produtos)
+
+    if params[:search].present?
+      search_term = "%#{params[:search]}%"
+      @pedidos = @pedidos.joins(:pessoa)
+                        .where("pessoas.nome ILIKE ? OR pessoas.sobrenome ILIKE ? OR pessoas.empresa ILIKE ? OR pessoas.setor ILIKE ?",
+                                search_term, search_term, search_term, search_term)
+    end
+
+    @pedidos = @pedidos.page(params[:page])
+
+    render json: @pedidos.as_json(
+      include: {
+        pessoa: { only: [ :id, :nome, :sobrenome, :empresa, :setor ] },
+        produtos: { only: [ :id, :nome, :preco ] }
+      }
+    )
   end
 
   def create

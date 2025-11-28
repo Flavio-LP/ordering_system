@@ -33,12 +33,14 @@ const OrderForm: React.FC = () => {
   const [itensPedido, setItensPedido] = useState<PedidoProduto[]>([]);
   const [produtoSelecionado, setProdutoSelecionado] = useState('');
   const [quantidade, setQuantidade] = useState('1');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     fetchProdutos();
     fetchPessoas();
     fetchPedidos();
-  }, []);
+  }, [currentPage, searchTerm]);
 
   const fetchProdutos = async () => {
     const response = await fetch('/api/produtos');
@@ -53,7 +55,11 @@ const OrderForm: React.FC = () => {
   };
 
   const fetchPedidos = async () => {
-    const response = await fetch('/api/pedidos');
+    const params = new URLSearchParams();
+    if (searchTerm) params.append('search', searchTerm);
+    params.append('page', currentPage.toString());
+    
+    const response = await fetch(`/api/pedidos?${params.toString()}`);
     const data = await response.json();
     setPedidos(data);
   };
@@ -81,6 +87,11 @@ const OrderForm: React.FC = () => {
     return itensPedido.reduce((sum, item) => sum + (item.quantidade * item.preco_unitario), 0);
   };
 
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
+    setCurrentPage(1);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (itensPedido.length === 0) {
@@ -106,17 +117,16 @@ const OrderForm: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: 1000, margin: 'auto', padding: 20 }}>
+    <div>
       <h1>Cadastro de Pedidos</h1>
       
-      <form onSubmit={handleSubmit} style={{ marginBottom: 30, border: '1px solid #ddd', padding: 20 }}>
-        <div style={{ marginBottom: 10 }}>
-          <label style={{ display: 'block', marginBottom: 5 }}>Cliente:</label>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Cliente:</label>
           <select 
             value={pessoaId} 
             onChange={e => setPessoaId(e.target.value)} 
             required 
-            style={{ width: '100%', padding: 8 }}
           >
             <option value="">Selecione um cliente</option>
             {pessoas.map(pessoa => (
@@ -127,9 +137,9 @@ const OrderForm: React.FC = () => {
           </select>
         </div>
 
-        <div style={{ marginBottom: 20, border: '1px solid #ddd', padding: 15 }}>
+        <div>
           <h3>Adicionar Produtos</h3>
-          <div style={{ display: 'flex', gap: 10, marginBottom: 10 }}>
+          <div>
             <select 
               value={produtoSelecionado} 
               onChange={e => setProdutoSelecionado(e.target.value)}
@@ -147,23 +157,22 @@ const OrderForm: React.FC = () => {
               value={quantidade} 
               onChange={e => setQuantidade(e.target.value)}
               min="1"
-              style={{ flex: 1, padding: 8 }}
               placeholder="Qtd"
             />
-            <button type="button" onClick={adicionarItem} style={{ padding: '8px 16px' }}>
+            <button type="button" onClick={adicionarItem}>
               Adicionar
             </button>
           </div>
 
           {itensPedido.length > 0 && (
-            <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 10 }}>
+            <table>
               <thead>
                 <tr>
-                  <th style={{ border: '1px solid #ddd', padding: 8 }}>Produto</th>
-                  <th style={{ border: '1px solid #ddd', padding: 8 }}>Quantidade</th>
-                  <th style={{ border: '1px solid #ddd', padding: 8 }}>Preço Unit.</th>
-                  <th style={{ border: '1px solid #ddd', padding: 8 }}>Subtotal</th>
-                  <th style={{ border: '1px solid #ddd', padding: 8 }}>Ação</th>
+                  <th>Produto</th>
+                  <th>Quantidade</th>
+                  <th>Preço Unit.</th>
+                  <th>Subtotal</th>
+                  <th>Ação</th>
                 </tr>
               </thead>
               <tbody>
@@ -171,13 +180,13 @@ const OrderForm: React.FC = () => {
                   const produto = produtos.find(p => p.id === item.produto_id);
                   return (
                     <tr key={index}>
-                      <td style={{ border: '1px solid #ddd', padding: 8 }}>{produto?.nome}</td>
-                      <td style={{ border: '1px solid #ddd', padding: 8 }}>{item.quantidade}</td>
-                      <td style={{ border: '1px solid #ddd', padding: 8 }}>R$ {item.preco_unitario}</td>
-                      <td style={{ border: '1px solid #ddd', padding: 8 }}>
+                      <td>{produto?.nome}</td>
+                      <td>{item.quantidade}</td>
+                      <td>R$ {item.preco_unitario}</td>
+                      <td>
                         R$ {(item.quantidade * item.preco_unitario).toFixed(2)}
                       </td>
-                      <td style={{ border: '1px solid #ddd', padding: 8 }}>
+                      <td>
                         <button type="button" onClick={() => removerItem(index)}>Remover</button>
                       </td>
                     </tr>
@@ -187,35 +196,43 @@ const OrderForm: React.FC = () => {
             </table>
           )}
 
-          <div style={{ marginTop: 10, textAlign: 'right', fontSize: 18, fontWeight: 'bold' }}>
+          <div>
             Total: R$ {calcularTotal().toFixed(2)}
           </div>
         </div>
 
-        <button type="submit" style={{ padding: '10px 20px', fontSize: 16 }}>
+        <button type="submit">
           Finalizar Pedido
         </button>
       </form>
 
+      <div>
+        <input 
+          value={searchTerm} 
+          onChange={e => handleSearch(e.target.value)} 
+          placeholder="Buscar por nome..." 
+        />
+      </div>
+
       <h2>Pedidos Realizados</h2>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <table>
         <thead>
           <tr>
-            <th style={{ border: '1px solid #ddd', padding: 8 }}>ID</th>
-            <th style={{ border: '1px solid #ddd', padding: 8 }}>Cliente</th>
-            <th style={{ border: '1px solid #ddd', padding: 8 }}>Total</th>
-            <th style={{ border: '1px solid #ddd', padding: 8 }}>Produtos</th>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th>Produtos</th>
           </tr>
         </thead>
         <tbody>
           {pedidos.map(pedido => (
             <tr key={pedido.id}>
-              <td style={{ border: '1px solid #ddd', padding: 8 }}>{pedido.id}</td>
-              <td style={{ border: '1px solid #ddd', padding: 8 }}>
+              <td>{pedido.id}</td>
+              <td>
                 {pedido.pessoa?.nome} {pedido.pessoa?.sobrenome}
               </td>
-              <td style={{ border: '1px solid #ddd', padding: 8 }}>R$ {pedido.total}</td>
-              <td style={{ border: '1px solid #ddd', padding: 8 }}>
+              <td>R$ {pedido.total}</td>
+              <td>
                 {pedido.produtos?.map(p => p.nome).join(', ')}
               </td>
             </tr>
