@@ -7,43 +7,37 @@
   <%= csp_meta_tag %>
 </head>
 <body>
-  <% if user_signed_in? %>
-    <div class="user-info">
-      <span>👤 <%= current_user.email %></span>
-      <%= button_to "Sair", destroy_user_session_path, method: :delete %>
-    </div>
-  <% end %>
+  <%= stylesheet_link_tag 'global/stylesheet' %>
 
-  <div class="container">
-    <div class="header">
-      <h1>Sistema de Pedidos</h1>
-      <p>Gerencie seus produtos, clientes e pedidos em um só lugar</p>
-    </div>
+  <div class="header-links">
+    <% if user_signed_in? %>
+      <%= link_to "Sair", destroy_user_session_path, method: :delete %>
+    <% end %>
+  </div>
 
-    <div class="cards-grid">
-      <a href="/produtos" class="card">
-        <div class="card-icon">📦</div>
+  <div class="main-content">
+    <h1 class="main-title">Sistema de Gerenciamento</h1>
+    
+    <div class="navigation-grid">
+      <%= link_to produtos_path, class: "nav-card" do %>
         <h2>Produtos</h2>
-        <p>Cadastre e gerencie o catálogo de produtos</p>
-      </a>
-
-      <a href="/pessoas" class="card">
-        <div class="card-icon">👥</div>
+        <p>Gerencie os produtos do sistema</p>
+      <% end %>
+      
+      <%= link_to pessoas_path, class: "nav-card" do %>
         <h2>Pessoas</h2>
-        <p>Gerencie clientes e fornecedores</p>
-      </a>
-
-      <a href="/pedidos" class="card">
-        <div class="card-icon">🛒</div>
+        <p>Cadastre e gerencie pessoas</p>
+      <% end %>
+      
+      <%= link_to pedidos_path, class: "nav-card" do %>
         <h2>Pedidos</h2>
-        <p>Visualize e gerencie pedidos</p>
-      </a>
-
-      <a href="/admin/users" class="card card-admin">
-        <div class="card-icon">⚙️</div>
+        <p>Registre e acompanhe pedidos</p>
+      <% end %>
+      
+      <%= link_to admin_users_path, class: "nav-card" do %>
         <h2>Usuários</h2>
-        <p>Administre usuários e permissões</p>
-      </a>
+        <p>Gerencie usuários do sistema</p>
+      <% end %>
     </div>
   </div>
 </body>

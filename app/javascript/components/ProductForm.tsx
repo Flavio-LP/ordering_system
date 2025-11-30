@@ -48,19 +48,17 @@ const ProductForm: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="produtos-container">
       <h1>Produtos</h1>
       
-      <form onSubmit={handleSubmit}>
-        <div>
+      <form onSubmit={handleSubmit} className="produtos-form">
+        <div className="produtos-form-fields">
           <input 
             value={nome} 
             onChange={e => setNome(e.target.value)} 
             placeholder="Nome" 
             required 
           />
-        </div>
-        <div style={{ marginBottom: 10 }}>
           <input 
             value={preco} 
             onChange={e => setPreco(e.target.value)} 
@@ -69,8 +67,6 @@ const ProductForm: React.FC = () => {
             step="0.01" 
             required 
           />
-        </div>
-        <div style={{ marginBottom: 10 }}>
           <textarea 
             value={descricao} 
             onChange={e => setDescricao(e.target.value)} 
@@ -80,7 +76,7 @@ const ProductForm: React.FC = () => {
         <button type="submit">Cadastrar Produto</button>
       </form>
 
-      <div style={{ marginBottom: 20 }}>
+      <div className="produtos-search">
         <input 
           value={searchTerm} 
           onChange={e => handleSearch(e.target.value)} 
@@ -88,26 +84,28 @@ const ProductForm: React.FC = () => {
         />
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Preço</th>
-            <th>Descrição</th>
-          </tr>
-        </thead>
-        <tbody>
-          {produtos.map(produto => (
-            <tr key={produto.id}>
-              <td>{produto.nome}</td>
-              <td>R$ {produto.preco}</td>
-              <td>{produto.descricao}</td>
+      <div className="produtos-table-wrapper">
+        <table className="produtos-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Preço</th>
+              <th>Descrição</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {produtos.map(produto => (
+              <tr key={produto.id}>
+                <td>{produto.nome}</td>
+                <td>R$ {produto.preco}</td>
+                <td>{produto.descricao}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      <div>
+      <div className="produtos-pagination">
         <button 
           onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
           disabled={currentPage === 1}
