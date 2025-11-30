@@ -51,35 +51,29 @@ const PessoaForm: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="pessoas-container">
       <h1>Cadastro de Pessoas</h1>
       
-      <form onSubmit={handleSubmit}>
-        <div>
+      <form onSubmit={handleSubmit} className="pessoas-form">
+        <div className="pessoas-form-fields">
           <input 
             value={nome} 
             onChange={e => setNome(e.target.value)} 
             placeholder="Nome" 
             required 
           />
-        </div>
-        <div style={{ marginBottom: 10 }}>
           <input 
             value={sobrenome} 
             onChange={e => setSobrenome(e.target.value)} 
             placeholder="Sobrenome" 
             required 
           />
-        </div>
-        <div>
           <input 
             value={empresa} 
             onChange={e => setEmpresa(e.target.value)} 
             placeholder="Empresa" 
             required 
           />
-        </div>
-        <div>
           <input 
             value={setor} 
             onChange={e => setSetor(e.target.value)} 
@@ -90,7 +84,7 @@ const PessoaForm: React.FC = () => {
         <button type="submit">Cadastrar Pessoa</button>
       </form>
 
-      <div>
+      <div className="pessoas-search">
         <input 
           value={searchTerm} 
           onChange={e => handleSearch(e.target.value)} 
@@ -98,28 +92,30 @@ const PessoaForm: React.FC = () => {
         />
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Sobrenome</th>
-            <th>Empresa</th>
-            <th>Setor</th>
-          </tr>
-        </thead>
-        <tbody>
-          {pessoas.map(pessoa => (
-            <tr key={pessoa.id}>
-              <td>{pessoa.nome}</td>
-              <td>{pessoa.sobrenome}</td>
-              <td>{pessoa.empresa}</td>
-              <td>{pessoa.setor}</td>
+      <div className="pessoas-table-wrapper">
+        <table className="pessoas-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Sobrenome</th>
+              <th>Empresa</th>
+              <th>Setor</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {pessoas.map(pessoa => (
+              <tr key={pessoa.id}>
+                <td>{pessoa.nome}</td>
+                <td>{pessoa.sobrenome}</td>
+                <td>{pessoa.empresa}</td>
+                <td>{pessoa.setor}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      <div>
+      <div className="pessoas-pagination">
         <button 
           onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
           disabled={currentPage === 1}

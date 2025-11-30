@@ -1,4 +1,4 @@
-.produtos-container{
+.pessoas-container{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,11 +10,11 @@
   box-sizing: border-box;
 }
 
-.produtos-container h1 {
+.pessoas-container h1 {
   margin: 0;
 }
 
-.produtos-form {
+.pessoas-form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,26 +23,23 @@
   max-width: 500px;
 }
 
-.produtos-form-fields {
+.pessoas-form-fields {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
+  align-items: center;
 }
 
-.produtos-form input,
-.produtos-form textarea {
+.pessoas-form input {
   max-width: 400px;
+  width: 100%;
   box-sizing: border-box;
   padding: 8px 12px;
   border-radius: 20px;
 }
 
-.produtos-form textarea {
-  min-height: 60px;
-  border-radius: 15px;
-}
-
-.produtos-form button {
+.pessoas-form button {
   padding: 10px 24px;
   align-self: center;
   border-radius: 25px;
@@ -50,36 +47,37 @@
   cursor: pointer;
 }
 
-.produtos-search {
+.pessoas-search {
   display: flex;
   width: 100%;
   max-width: 400px;
+  justify-content: center;
 }
 
-.produtos-search input {
+.pessoas-search input {
   width: 100%;
   box-sizing: border-box;
   padding: 8px 12px;
   border-radius: 20px;
 }
 
-.produtos-table-wrapper {
+.pessoas-table-wrapper {
   width: 100%;
   overflow-x: auto;
 }
 
-.produtos-table {
+.pessoas-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.produtos-table th,
-.produtos-table td {
+.pessoas-table th,
+.pessoas-table td {
   padding: 10px;
   text-align: left;
 }
 
-.produtos-pagination {
+.pessoas-pagination {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,87 +85,65 @@
   flex-wrap: wrap;
 }
 
-.produtos-pagination button {
+.pessoas-pagination button {
   padding: 10px 20px;
   border-radius: 25px;
   border: none;
   cursor: pointer;
 }
 
-.produtos-pagination button:disabled {
+.pessoas-pagination button:disabled {
   cursor: not-allowed;
   opacity: 0.5;
 }
 
-.produtos-pagination span {
+.pessoas-pagination span {
   white-space: nowrap;
 }
 
-.root{
-  display: flex;
-  align-items: center;
-}
-
 @media (max-width: 768px) {
-  .produtos-container {
+  .pessoas-container {
     padding: 15px;
   }
 
-  .produtos-form,
-  .produtos-search {
+  .pessoas-form,
+  .pessoas-search {
     max-width: 100%;
   }
 
-  .produtos-form input,
-  .produtos-form textarea,
-  .produtos-search input {
+  .pessoas-form input,
+  .pessoas-search input {
     max-width: 100%;
     padding: 8px 12px;
   }
 
-  .produtos-table th,
-  .produtos-table td {
+  .pessoas-table th,
+  .pessoas-table td {
     padding: 8px;
   }
 
-  .produtos-pagination {
+  .pessoas-pagination {
     gap: 10px;
-  }
-
-  .return {
-    padding: 15px;
-  }
-
-  .return a {
-    padding: 10px 24px;
   }
 }
 
 @media (max-width: 480px) {
-  .produtos-container {
+  .pessoas-container {
     padding: 10px;
   }
 
-  .produtos-form button,
-  .produtos-pagination button {
+  .pessoas-form button,
+  .pessoas-pagination button {
     width: 100%;
     max-width: 100%;
   }
 
-  .produtos-form button {
+  .pessoas-form button {
     align-self: stretch;
   }
 
-  .produtos-table th,
-  .produtos-table td {
+  .pessoas-table th,
+  .pessoas-table td {
     padding: 6px;
-  }
-
-  .return {
-    padding: 10px;
-  }
-
-  .return a {
-    padding: 10px 20px;
   }
 }
