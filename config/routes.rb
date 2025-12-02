@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-   devise_for :users, skip: [ :registrations ]
+  devise_for :users, skip: [ :registrations ]
 
   devise_scope :user do
     authenticated :user do
@@ -9,6 +9,8 @@ Rails.application.routes.draw do
         path_names: { edit: "edit" },
         controller: "devise/registrations",
         as: :user_registration
+
+        get "/users/sign_out", to: "devise/sessions#destroy"
     end
   end
 

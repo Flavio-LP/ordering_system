@@ -78,6 +78,11 @@
   text-align: left;
 }
 
+.searchable-select{
+  display: flex;
+  justify-content: center;
+}
+
 .pedidos-pagination {
   display: flex;
   justify-content: center;
