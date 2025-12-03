@@ -1,70 +1,225 @@
 .pedidos-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  padding: 20px;
-  max-width: 800px;
+    max-width: 1400px;
   margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
+  padding: 20px;
 }
 
 .pedidos-container h1 {
-  margin: 0;
+  color: #333;
+  margin-bottom: 30px;
 }
 
 .pedidos-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-  width: 100%;
-  max-width: 500px;
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 8px;
+  margin-bottom: 30px;
 }
 
 .pedidos-form-fields {
   display: flex;
   flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.adicionar-item {
+  display: flex;
   gap: 10px;
-  width: 100%;
   align-items: center;
 }
 
-.pedidos-form select,
-.pedidos-form input {
-  max-width: 400px;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 8px 12px;
-  border-radius: 20px;
+.adicionar-item input {
+  flex: 0 0 150px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
-.pedidos-form button {
-  padding: 10px 24px;
-  align-self: center;
-  border-radius: 25px;
-  border: none;
+.searchable-select {
+  position: relative;
+  flex: 1;
+}
+
+.searchable-select input.input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.searchable-select div[role="listbox"] {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.searchable-select div[role="option"] {
+  padding: 10px;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.searchable-select div[role="option"]:hover {
+  background: #f8f9fa;
+}
+
+.searchable-select div[role="option"] span {
+  flex: 1;
+  color: #333;
+}
+
+.searchable-select div[role="option"] small {
+  color: #666;
+  font-size: 12px;
+}
+
+.btn-adicionar {
+  padding: 10px 20px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.btn-adicionar:hover {
+  background: #218838;
+}
+
+.carrinho {
+  margin-top: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.carrinho h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.carrinho-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.carrinho-table thead {
+  background: #f8f9fa;
+}
+
+.carrinho-table th {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #dee2e6;
+  color: #333;
+  font-weight: 600;
+}
+
+.carrinho-table tbody tr {
+  border-bottom: 1px solid #dee2e6;
+  color: #000;
+}
+
+.carrinho-table tbody td {
+  padding: 12px;
+  color: #000;
+}
+
+.carrinho-table tfoot {
+  background: #f8f9fa;
+  font-weight: bold;
+}
+
+.carrinho-table tfoot td {
+  padding: 12px;
+  border-top: 2px solid #dee2e6;
+}
+
+.btn-remover {
+  padding: 6px 12px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn-remover:hover {
+  background: #c82333;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-actions button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-actions button[type="submit"] {
+  background: #007bff;
+  color: white;
+}
+
+.form-actions button[type="submit"]:hover {
+  background: #0056b3;
+}
+
+.form-actions button[type="submit"]:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.btn-cancelar {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-cancelar:hover {
+  background: #5a6268;
 }
 
 .pedidos-search {
-  display: flex;
-  width: 100%;
-  max-width: 400px;
-  justify-content: center;
+  margin-bottom: 20px;
 }
 
 .pedidos-search input {
   width: 100%;
-  box-sizing: border-box;
-  padding: 8px 12px;
-  border-radius: 20px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
 .pedidos-table-wrapper {
-  width: 100%;
-  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .pedidos-table {
@@ -72,85 +227,130 @@
   border-collapse: collapse;
 }
 
-.pedidos-table th,
-.pedidos-table td {
-  padding: 10px;
-  text-align: left;
+.pedidos-table thead {
+  background: #007bff;
+  color: white;
 }
 
-.searchable-select{
-  display: flex;
-  justify-content: center;
+.pedidos-table th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.pedidos-table tbody tr {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.pedidos-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.pedidos-table td {
+  padding: 15px;
+  color: #333;
+}
+
+.btn-editar {
+  padding: 8px 16px;
+  background: #ffc107;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.btn-editar:hover {
+  background: #e0a800;
 }
 
 .pedidos-pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+  padding: 20px;
 }
 
 .pedidos-pagination button {
   padding: 10px 20px;
-  border-radius: 25px;
+  background: #007bff;
+  color: white;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
+  font-size: 14px;
+}
+
+.pedidos-pagination button:hover {
+  background: #0056b3;
 }
 
 .pedidos-pagination button:disabled {
+  background: #6c757d;
   cursor: not-allowed;
   opacity: 0.5;
 }
 
 .pedidos-pagination span {
-  white-space: nowrap;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
 }
 
-@media (max-width: 768px) {
-  .pedidos-container {
-    padding: 15px;
-  }
-
-  .pedidos-form,
-  .pedidos-search {
-    max-width: 100%;
-  }
-
-  .pedidos-form select,
-  .pedidos-form input,
-  .pedidos-search input {
-    max-width: 100%;
-    padding: 8px 12px;
-  }
-
-  .pedidos-table th,
-  .pedidos-table td {
-    padding: 8px;
-  }
-
-  .pedidos-pagination {
-    gap: 10px;
-  }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
 }
 
-@media (max-width: 480px) {
-  .pedidos-container {
-    padding: 10px;
-  }
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-  .pedidos-form button,
-  .pedidos-pagination button {
-    width: 100%;
-    max-width: 100%;
-  }
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+}
 
-  .pedidos-form button {
-    align-self: stretch;
-  }
+.modal-content p {
+  margin-bottom: 25px;
+  color: #666;
+  font-size: 16px;
+}
 
-  .pedidos-table th,
-  .pedidos-table td {
-    padding: 6px;
-  }
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn-confirmar {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-confirmar:hover {
+  background: #c82333;
 }
