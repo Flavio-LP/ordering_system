@@ -1,0 +1,285 @@
+.producao-container{
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.producao-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.producao-header h1 {
+  color: #333;
+  margin: 0;
+}
+
+.producao-controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.date-input {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-imprimir {
+  padding: 10px 20px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.btn-imprimir:hover {
+  background: #218838;
+}
+
+.producao-info {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.producao-info h2 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.total-pedidos {
+  margin: 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
+}
+
+.sem-pedidos {
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.sem-pedidos p {
+  margin: 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.produtos-resumo,
+.produtos-detalhado,
+.pedidos-lista {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.produtos-resumo h3,
+.produtos-detalhado h3,
+.pedidos-lista h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.producao-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.producao-table thead {
+  background: #007bff;
+  color: white;
+}
+
+.producao-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.producao-table tbody tr {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.producao-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.producao-table td {
+  padding: 12px;
+  color: #333;
+}
+
+.produto-nome {
+  font-weight: 600;
+  color: #007bff;
+}
+
+.quantidade-total {
+  font-weight: 700;
+  font-size: 18px;
+  color: #28a745;
+}
+
+.produto-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.produto-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.produto-card-header h4 {
+  margin: 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.badge {
+  background: #28a745;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.detalhamento-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.detalhamento-table thead {
+  background: #6c757d;
+  color: white;
+}
+
+.detalhamento-table th {
+  padding: 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.detalhamento-table tbody tr {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.detalhamento-table td {
+  padding: 10px;
+  color: #333;
+}
+
+.produtos-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.produtos-lista li {
+  padding: 4px 0;
+  color: #666;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .producao-container {
+    padding: 0;
+  }
+
+  .produtos-resumo,
+  .produtos-detalhado,
+  .pedidos-lista {
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+
+  .produto-card {
+    page-break-inside: avoid;
+  }
+
+  .producao-table,
+  .detalhamento-table {
+    page-break-inside: auto;
+  }
+
+  .producao-table tr,
+  .detalhamento-table tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .producao-container {
+    padding: 10px;
+  }
+
+  .producao-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .producao-controls {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .date-input,
+  .btn-imprimir {
+    width: 100%;
+  }
+
+  .produtos-resumo,
+  .produtos-detalhado,
+  .pedidos-lista {
+    padding: 15px;
+    overflow-x: auto;
+  }
+
+  .producao-table,
+  .detalhamento-table {
+    min-width: 600px;
+  }
+
+  .produto-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
