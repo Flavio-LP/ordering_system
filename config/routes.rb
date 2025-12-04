@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-   devise_for :users, skip: [ :registrations ]
+  devise_for :users, skip: [ :registrations ]
 
   devise_scope :user do
     authenticated :user do
@@ -9,6 +9,8 @@ Rails.application.routes.draw do
         path_names: { edit: "edit" },
         controller: "devise/registrations",
         as: :user_registration
+
+        get "/users/sign_out", to: "devise/sessions#destroy"
     end
   end
 
@@ -24,6 +26,8 @@ Rails.application.routes.draw do
 
     get "pedidos", to: "page#pedidos"
 
+    get "producao", to: "page#producao"
+
     namespace :admin do
       resources :users
     end
@@ -32,6 +36,7 @@ Rails.application.routes.draw do
       resources :produtos
       resources :pedidos
       resources :pessoas
+      get "producao", to: "producao#index"
     end
   end
 
