@@ -7,4 +7,7 @@ class PageController < ApplicationController
 
   def pedidos
   end
+
+  def producao
+  end
 end

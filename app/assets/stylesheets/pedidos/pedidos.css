@@ -1,5 +1,5 @@
 .pedidos-container {
-    max-width: 1400px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -58,6 +58,7 @@
   border: 1px solid #ddd;
   border-top: none;
   border-radius: 0 0 4px 4px;
+  max-height: 200px;
   overflow-y: auto;
   z-index: 100;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -353,4 +354,93 @@
 
 .btn-confirmar:hover {
   background: #c82333;
+}
+
+@media (max-width: 768px) {
+  .pedidos-container {
+    padding: 10px;
+  }
+
+  .pedidos-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .pedidos-form {
+    padding: 15px;
+  }
+
+  .adicionar-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .adicionar-item input {
+    flex: 1;
+    width: 100%;
+  }
+
+  .btn-adicionar {
+    width: 100%;
+  }
+
+  .carrinho {
+    padding: 15px;
+    overflow-x: auto;
+  }
+
+  .carrinho-table {
+    min-width: 600px;
+  }
+
+  .carrinho-table th,
+  .carrinho-table td {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .pedidos-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .pedidos-table {
+    min-width: 700px;
+  }
+
+  .pedidos-table th,
+  .pedidos-table td {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
+
+  .pedidos-pagination {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pedidos-pagination button {
+    width: 100%;
+  }
 }

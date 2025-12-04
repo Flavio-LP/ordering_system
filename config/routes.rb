@@ -26,6 +26,8 @@ Rails.application.routes.draw do
 
     get "pedidos", to: "page#pedidos"
 
+    get "producao", to: "page#producao"
+
     namespace :admin do
       resources :users
     end
@@ -34,6 +36,7 @@ Rails.application.routes.draw do
       resources :produtos
       resources :pedidos
       resources :pessoas
+      get "producao", to: "producao#index"
     end
   end
 

@@ -212,15 +212,27 @@ const PedidoForm: React.FC = () => {
   const excluirPedido = async () => {
     if (!editandoPedido) return;
 
-    const response = await fetch(`/api/pedidos/${editandoPedido.id}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' }
-    });
+    try {
+      const response = await fetch(`/api/pedidos/${editandoPedido.id}`, {
+        method: 'DELETE',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
 
-    if (response.ok) {
-      setShowDeleteModal(false);
-      cancelarEdicao();
-      await fetchPedidos();
+      if (response.ok) {
+        setShowDeleteModal(false);
+        cancelarEdicao();
+        await fetchPedidos();
+      } else {
+        const error = await response.json();
+        console.error('Erro ao excluir pedido:', error);
+        alert('Erro ao excluir pedido. Tente novamente.');
+      }
+    } catch (error) {
+      console.error('Erro ao excluir pedido:', error);
+      alert('Erro ao excluir pedido. Tente novamente.');
     }
   };
 
@@ -351,17 +363,15 @@ const PedidoForm: React.FC = () => {
               placeholder="Pesquisar/Selecionar Produto"
               maxVisible={10}
             />
-
             <input
+              type="number"
               value={quantidade}
               onChange={e => setQuantidade(e.target.value)}
               placeholder="Quantidade"
-              type="number"
               min="1"
             />
-
             <button type="button" onClick={adicionarAoCarrinho} className="btn-adicionar">
-              Adicionar Item
+              Adicionar
             </button>
           </div>
         </div>
@@ -386,9 +396,9 @@ const PedidoForm: React.FC = () => {
                     <td>
                       <input
                         type="number"
-                        min="1"
                         value={item.quantidade}
-                        onChange={e => editarQuantidade(item.produto_id, parseInt(e.target.value) || 1)}
+                        onChange={e => editarQuantidade(item.produto_id, parseInt(e.target.value))}
+                        min="1"
                         style={{ width: '80px', padding: '5px' }}
                       />
                     </td>
@@ -408,8 +418,8 @@ const PedidoForm: React.FC = () => {
               </tbody>
               <tfoot>
                 <tr>
-                  <td colSpan={3}><strong>Total</strong></td>
-                  <td colSpan={2}><strong>R$ {calcularTotal().toFixed(2)}</strong></td>
+                  <td colSpan={3}>Total</td>
+                  <td colSpan={2}>R$ {calcularTotal().toFixed(2)}</td>
                 </tr>
               </tfoot>
             </table>
@@ -418,11 +428,11 @@ const PedidoForm: React.FC = () => {
 
         <div className="form-actions">
           <button type="submit" disabled={!pessoaId || carrinho.length === 0}>
-            {editandoPedido ? 'Atualizar Pedido' : 'Cadastrar Pedido'}
+            {editandoPedido ? 'Atualizar Pedido' : 'Criar Pedido'}
           </button>
           {editandoPedido && (
             <button type="button" onClick={cancelarEdicao} className="btn-cancelar">
-              Cancelar
+              Cancelar Edição
             </button>
           )}
         </div>
@@ -430,9 +440,10 @@ const PedidoForm: React.FC = () => {
 
       <div className="pedidos-search">
         <input
+          type="text"
+          placeholder="Buscar por nome, sobrenome, empresa ou setor..."
           value={searchTerm}
           onChange={e => handleSearch(e.target.value)}
-          placeholder="Buscar por produto ou pessoa..."
         />
       </div>
 
@@ -440,58 +451,41 @@ const PedidoForm: React.FC = () => {
         <table className="pedidos-table">
           <thead>
             <tr>
+              <th>ID</th>
               <th>Pessoa</th>
-              <th>Itens</th>
-              <th>Valor Total</th>
+              <th>Total</th>
               <th>Data</th>
               <th>Ações</th>
             </tr>
           </thead>
           <tbody>
-            {pedidos.length === 0 ? (
-              <tr>
-                <td colSpan={5} style={{ textAlign: 'center' }}>Nenhum pedido encontrado</td>
+            {pedidos.map(pedido => (
+              <tr key={pedido.id}>
+                <td>{pedido.id}</td>
+                <td>{pedido.pessoa_nome}</td>
+                <td>R$ {Number(pedido.total).toFixed(2)}</td>
+                <td>{new Date(pedido.data_pedido).toLocaleDateString('pt-BR')}</td>
+                <td>
+                  <button onClick={() => editarPedido(pedido)} className="btn-editar">
+                    Editar
+                  </button>
+                </td>
               </tr>
-            ) : (
-              pedidos.map(pedido => (
-                <tr key={pedido.id}>
-                  <td>{pedido.pessoa_nome}</td>
-                  <td>
-                    {pedido.pedido_produtos?.map(pp => (
-                      <div key={pp.id}>
-                        {pp.produto_nome} (x{pp.quantidade})
-                      </div>
-                    ))}
-                  </td>
-                  <td>R$ {Number(pedido.total).toFixed(2)}</td>
-                  <td>{new Date(pedido.data_pedido).toLocaleDateString()}</td>
-                  <td>
-                    <button
-                      onClick={() => editarPedido(pedido)}
-                      className="btn-editar"
-                    >
-                      Editar
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
+            ))}
           </tbody>
         </table>
       </div>
 
       <div className="pedidos-pagination">
         <button
-          onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+          onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
           disabled={currentPage === 1}
         >
           Anterior
         </button>
-        <span>
-          Página {currentPage} de {totalPages}
-        </span>
+        <span>Página {currentPage} de {totalPages}</span>
         <button
-          onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+          onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
           disabled={currentPage === totalPages}
         >
           Próxima
