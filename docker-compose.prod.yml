@@ -4,60 +4,91 @@ services:
   db:
     image: postgres:16
     container_name: ordering_system_db_prod
-    volumes:
-      - postgres_data_prod:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${PG_USER}
       POSTGRES_PASSWORD: ${PG_PASSWORD}
       POSTGRES_DB: ordering_system_production
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER}"]
+      interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 5
 
   redis:
     image: redis:7-alpine
     container_name: ordering_system_redis_prod
     ports:
-      - "6380:6379"
+      - "6379:6379"
     volumes:
       - redis_data_prod:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
+      interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 5
+
+  webpacker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ordering_system_webpacker_prod
+    env_file:
+      - .env
+    command: bash -c "bundle exec rails webpacker:compile && tail -f /dev/null"
+    volumes:
+      - bundle_cache_prod:/usr/local/bundle
+      - node_modules_prod:/rails/node_modules
+      - packs_prod:/rails/public/packs
+    environment:
+      RAILS_ENV: production
+      NODE_ENV: production
+      NODE_OPTIONS: --openssl-legacy-provider
+      PG_HOST: db
+      PG_PORT: 5432
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   web:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: ordering_system_web_prod
+    env_file:
+      - .env
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0"
+    volumes:
+      - bundle_cache_prod:/usr/local/bundle
+      - node_modules_prod:/rails/node_modules
+      - packs_prod:/rails/public/packs
     ports:
-      - "80:3000"
+      - "3000:3000"
     environment:
       RAILS_ENV: production
       NODE_ENV: production
-      DATABASE_URL: postgres://${PG_USER}:${PG_PASSWORD}@db:5432/ordering_system_production
-      PG_USER: ${PG_USER}
-      PG_PASSWORD: ${PG_PASSWORD}
+      NODE_OPTIONS: --openssl-legacy-provider
       PG_HOST: db
       PG_PORT: 5432
       REDIS_URL: redis://redis:6379/0
-      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
-      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
-      RAILS_SERVE_STATIC_FILES: "true"
-      RAILS_LOG_TO_STDOUT: "true"
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
+      webpacker:
+        condition: service_started
     restart: unless-stopped
 
 volumes:
   postgres_data_prod:
   redis_data_prod:
+  bundle_cache_prod:
+  node_modules_prod:
+  packs_prod:
