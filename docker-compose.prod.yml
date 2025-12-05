@@ -31,31 +31,6 @@ services:
       timeout: 5s
       retries: 5
 
-  webpacker:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: ordering_system_webpacker_prod
-    env_file:
-      - .env
-    command: bash -c "bundle exec rails webpacker:compile && tail -f /dev/null"
-    volumes:
-      - bundle_cache_prod:/usr/local/bundle
-      - node_modules_prod:/rails/node_modules
-      - packs_prod:/rails/public/packs
-    environment:
-      RAILS_ENV: production
-      NODE_ENV: production
-      NODE_OPTIONS: --openssl-legacy-provider
-      PG_HOST: db
-      PG_PORT: 5432
-      REDIS_URL: redis://redis:6379/0
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-
   web:
     build:
       context: .
@@ -63,11 +38,7 @@ services:
     container_name: ordering_system_web_prod
     env_file:
       - .env
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0"
-    volumes:
-      - bundle_cache_prod:/usr/local/bundle
-      - node_modules_prod:/rails/node_modules
-      - packs_prod:/rails/public/packs
+    command: bash -c "bundle exec rails webpacker:compile && bundle exec rails assets:precompile && bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0"
     ports:
       - "3000:3000"
     environment:
@@ -77,18 +48,15 @@ services:
       PG_HOST: db
       PG_PORT: 5432
       REDIS_URL: redis://redis:6379/0
+      RAILS_SERVE_STATIC_FILES: "true"
+      RAILS_LOG_TO_STDOUT: "true"
     depends_on:
       db:
         condition: service_healthy
       redis:
         condition: service_healthy
-      webpacker:
-        condition: service_started
     restart: unless-stopped
 
 volumes:
   postgres_data_prod:
   redis_data_prod:
-  bundle_cache_prod:
-  node_modules_prod:
-  packs_prod:

@@ -17,20 +17,10 @@ module.exports = function(api) {
 
   return {
     presets: [
-      isTestEnv && [
+      [
         '@babel/preset-env',
         {
-          targets: {
-            node: 'current'
-          },
-          modules: 'commonjs'
-        },
-        '@babel/preset-react'
-      ],
-      (isProductionEnv || isDevelopmentEnv) && [
-        '@babel/preset-env',
-        {
-          forceAllTransforms: true,
+          forceAllTransforms: isProductionEnv,
           useBuiltIns: 'entry',
           corejs: 3,
           modules: false,
@@ -41,58 +31,25 @@ module.exports = function(api) {
         '@babel/preset-react',
         {
           development: isDevelopmentEnv || isTestEnv,
-          useBuiltIns: true
+          runtime: 'automatic'
         }
       ],
-      ['@babel/preset-typescript', { 'allExtensions': true, 'isTSX': true }]
-    ].filter(Boolean),
+      [
+        '@babel/preset-typescript',
+        {
+          allExtensions: true,
+          isTSX: true
+        }
+      ]
+    ],
     plugins: [
-      'babel-plugin-macros',
       '@babel/plugin-syntax-dynamic-import',
-      isTestEnv && 'babel-plugin-dynamic-import-node',
       '@babel/plugin-transform-destructuring',
-      [
-        '@babel/plugin-proposal-class-properties',
-        {
-          loose: true
-        }
-      ],
-      [
-        '@babel/plugin-proposal-object-rest-spread',
-        {
-          useBuiltIns: true
-        }
-      ],
-      [
-        '@babel/plugin-proposal-private-methods',
-        {
-          loose: true
-        }
-      ],
-      [
-        '@babel/plugin-proposal-private-property-in-object',
-        {
-          loose: true
-        }
-      ],
       [
         '@babel/plugin-transform-runtime',
         {
           helpers: false,
-          regenerator: true,
-          corejs: false
-        }
-      ],
-      [
-        '@babel/plugin-transform-regenerator',
-        {
-          async: false
-        }
-      ],
-      isProductionEnv && [
-        'babel-plugin-transform-react-remove-prop-types',
-        {
-          removeImport: true
+          regenerator: true
         }
       ]
     ].filter(Boolean)
