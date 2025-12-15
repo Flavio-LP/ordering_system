@@ -12,7 +12,7 @@
 }
 
 .producao-header h1 {
-  color: #333;
+  color: white;
   margin: 0;
 }
 
@@ -252,6 +252,7 @@
   .producao-header {
     flex-direction: column;
     align-items: flex-start;
+    color: white;
     gap: 15px;
   }
 

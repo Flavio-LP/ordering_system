@@ -58,7 +58,7 @@ class Api::PedidosController < Api::BaseController
   private
 
   def pedido_params
-    params.require(:pedido).permit(:pessoa_id, :total, pedido_produtos_attributes: [:id, :produto_id, :quantidade, :preco_unitario, :_destroy])
+    params.require(:pedido).permit(:pessoa_id, :total, :data_entrega, :status, pedido_produtos_attributes: [:id, :produto_id, :quantidade, :preco_unitario, :_destroy])
   end
 
   def serialize_pedido(p)
@@ -68,6 +68,8 @@ class Api::PedidosController < Api::BaseController
       pessoa_nome: [p.pessoa&.nome, p.pessoa&.sobrenome].compact.join(' '),
       total: (p.total || p.pedido_produtos.sum("quantidade * preco_unitario")),
       data_pedido: p.created_at,
+      data_entrega: p.data_entrega,
+      status: p.status || 0,
       pedido_produtos: p.pedido_produtos.map { |pp| 
         {
           id: pp.id,

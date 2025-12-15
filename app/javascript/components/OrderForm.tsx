@@ -6,6 +6,8 @@ interface Pedido {
   total: number;
   data_pedido: string;
   pessoa_nome?: string;
+  data_entrega: string;
+  status: number;
   pedido_produtos: PedidoProduto[];
 }
 
@@ -117,6 +119,8 @@ const PedidoForm: React.FC = () => {
   const [pessoas, setPessoas] = useState<{id: number, nome: string}[]>([]);
   const [editandoPedido, setEditandoPedido] = useState<Pedido | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [dataEntrega, setDataEntrega] = useState('');
+  const [status, setStatus] = useState(0);
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -135,7 +139,7 @@ const PedidoForm: React.FC = () => {
     try {
       const response = await fetch(`/api/pedidos?page=${currentPage}&per_page=${itemsPerPage}&search=${searchTerm}`);
       const data = await response.json();
-      setPedidos(data.pedidos || data || []);
+      setPedidos(data.pedidos ? data.pedidos.filter((p: Pedido) => p.status === 0) : (data || []));
       setTotalPages(data.total_pages || Math.ceil((data.pedidos || data || []).length / itemsPerPage) || 1);
     } catch (error) {
       console.error('Erro ao carregar pedidos:', error);
@@ -252,6 +256,8 @@ const PedidoForm: React.FC = () => {
         pedido: {
           pessoa_id: parseInt(pessoaId),
           total: calcularTotal(),
+          data_entrega: dataEntrega,
+          status: status,
           pedido_produtos_attributes: carrinho.map(item => ({
             produto_id: item.produto_id,
             quantidade: item.quantidade,
@@ -263,6 +269,8 @@ const PedidoForm: React.FC = () => {
 
     setPessoaId('');
     setCarrinho([]);
+    setDataEntrega('');
+    setStatus(0);
     setCurrentPage(1);
     await fetchPedidos();
   };
@@ -270,6 +278,8 @@ const PedidoForm: React.FC = () => {
   const editarPedido = (pedido: Pedido) => {
     setEditandoPedido(pedido);
     setPessoaId(String(pedido.pessoa_id));
+    setDataEntrega(pedido.data_entrega ? pedido.data_entrega.split('T')[0] : '');
+    setStatus(pedido.status || 0);
     setCarrinho(pedido.pedido_produtos.map(pp => ({
       id: pp.id,
       produto_id: pp.produto_id,
@@ -306,6 +316,8 @@ const PedidoForm: React.FC = () => {
         pedido: {
           pessoa_id: parseInt(pessoaId),
           total: calcularTotal(),
+          data_entrega: dataEntrega,
+          status: status,
           pedido_produtos_attributes: [...pedidoProdutosAttributes, ...pedidoProdutosRemovidos]
         }
       }),
@@ -321,6 +333,8 @@ const PedidoForm: React.FC = () => {
     setEditandoPedido(null);
     setPessoaId('');
     setCarrinho([]);
+    setDataEntrega('');
+    setStatus(0);
   };
 
   const handleSearch = (value: string) => {
@@ -354,6 +368,30 @@ const PedidoForm: React.FC = () => {
             placeholder="Pesquisar/Selecionar Pessoa"
             maxVisible={10}
           />
+
+          <div className="form-row">
+            <div className="form-group">
+              <label>Data de Entrega</label>
+              <input
+                type="date"
+                value={dataEntrega}
+                onChange={e => setDataEntrega(e.target.value)}
+                className="input"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Status</label>
+              <select
+                value={status}
+                onChange={e => setStatus(parseInt(e.target.value))}
+                className="input"
+              >
+                <option value={0}>Pendente</option>
+                <option value={1}>Entregue</option>
+              </select>
+            </div>
+          </div>
 
           <div className="adicionar-item">
             <SearchableSelect
@@ -454,7 +492,9 @@ const PedidoForm: React.FC = () => {
               <th>ID</th>
               <th>Pessoa</th>
               <th>Total</th>
-              <th>Data</th>
+              <th>Data Pedido</th>
+              <th>Data Entrega</th>
+              <th>Status</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -465,6 +505,12 @@ const PedidoForm: React.FC = () => {
                 <td>{pedido.pessoa_nome}</td>
                 <td>R$ {Number(pedido.total).toFixed(2)}</td>
                 <td>{new Date(pedido.data_pedido).toLocaleDateString('pt-BR')}</td>
+                <td>{pedido.data_entrega ? new Date(pedido.data_entrega).toLocaleDateString('pt-BR') : '-'}</td>
+                <td>
+                  <span className={`status-badge ${pedido.status === 1 ? 'entregue' : 'pendente'}`}>
+                    {pedido.status === 1 ? 'Entregue' : 'Pendente'}
+                  </span>
+                </td>
                 <td>
                   <button onClick={() => editarPedido(pedido)} className="btn-editar">
                     Editar
