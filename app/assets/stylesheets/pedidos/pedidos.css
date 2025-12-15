@@ -5,7 +5,7 @@
 }
 
 .pedidos-container h1 {
-  color: #333;
+  color: white;
   margin-bottom: 30px;
 }
 
@@ -21,6 +21,33 @@
   flex-direction: column;
   gap: 15px;
   margin-bottom: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
 .adicionar-item {
@@ -252,6 +279,25 @@
   color: #333;
 }
 
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.status-badge.pendente {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.entregue {
+  background-color: #d4edda;
+  color: #155724;
+}
+
 .btn-editar {
   padding: 8px 16px;
   background: #ffc107;
@@ -370,6 +416,11 @@
     padding: 15px;
   }
 
+  .form-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
   .adicionar-item {
     flex-direction: column;
     align-items: stretch;
@@ -404,7 +455,7 @@
   }
 
   .pedidos-table {
-    min-width: 700px;
+    min-width: 800px;
   }
 
   .pedidos-table th,
