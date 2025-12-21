@@ -7,9 +7,20 @@ RUN apt-get update -qq && \
     git \
     libpq-dev \
     libvips \
-    postgresql-client && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives && \
-    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    postgresql-client \
+    chromium \
+    chromium-driver \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libgtk-3-0 \
+    fonts-liberation \
+    xdg-utils && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
+# Node
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
     npm install -g yarn
 
@@ -27,4 +38,4 @@ RUN rm -f tmp/pids/server.pid
 
 EXPOSE 3000
 
-CMD ["bash", "-c", "bundle exec rails db:prepare && bundle exec rails db:seed && bundle exec rails server -b 0.0.0.0"]
+CMD ["bash", "-c", "bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0"]
